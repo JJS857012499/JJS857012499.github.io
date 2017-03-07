@@ -3,12 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 深水暗流
-subtitle: 冰是睡着的水
-description: 一个用gitpage来当笔记的家伙
-author: JJS
-email: 857012499@qq.com
-language: zh-CN 
+title: Hexo
+subtitle:
+description:
+author: John Doe
+language:
 timezone:
 
 # URL
@@ -69,6 +68,4 @@ theme: landscape
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
-  repo: https://github.com/JJS857012499/JJS857012499.github.io.git
-  branch: master
+  type:
