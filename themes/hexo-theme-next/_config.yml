@@ -340,7 +340,7 @@ duoshuo_share: true
 duoshuo_info:
   ua_enable: true
   admin_enable: false
-  user_id: 0
+  user_id: 3395386
   #admin_nickname: Author
 
 
