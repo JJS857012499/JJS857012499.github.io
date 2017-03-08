@@ -254,7 +254,7 @@ post_wordcount:
 #   image: url-of-image   - Images's url
 custom_logo:
   enabled: false
-  image: 
+  image:
 
 
 # Code Highlight theme
@@ -375,9 +375,9 @@ vkontakte_api:
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
-  enable: false
-  app_id: #<app_id>
-  app_key: #<app_key>
+  enable: true
+  app_id: V75crFg32NcD1gBrRYa7QohI-gzGzoHsz #<app_id>
+  app_key: s89dcpOqjm5SqjxoCWVpWR2e #<app_key>
 
 # Show PV/UV of the website/page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi/
