@@ -7,6 +7,7 @@ tags:
  - Linux
 ---
 常规就用weget下载
+<!-- more -->
 ## axel
 ### 安装
 ``` shell

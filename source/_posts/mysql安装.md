@@ -10,6 +10,7 @@ tags:
 ``` shell
 yum -y install gcc gcc-c++ make autoconf libtool-ltdl-devel gd-devel freetype-devel libxml2-devel libjpeg-devel libpng-devel openssl-devel curl-devel bison patch unzip libmcrypt-devel libmhash-devel ncurses-devel sudo bzip2 flex libaio-devel
 ```
+<!-- more -->
 ## 二、 安装cmake 编译器
 cmake 版本：cmake-3.1.1。
 1、下载地址：http://www.cmake.org/files/v3.1/cmake-3.1.1.tar.gz

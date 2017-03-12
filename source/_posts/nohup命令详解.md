@@ -9,6 +9,7 @@ tags:
 背景：
 nohup命令及其输出文件
 nohup命令：如果你正在运行一个进程，而且你觉得在退出帐户时该进程还不会结束，那么可以使用nohup命令。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。nohup就是不挂起的意思( no hang up)。
+<!-- more -->
 一般都是在linux下nohup格式：
 ``` shell
 nohup command

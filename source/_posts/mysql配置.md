@@ -11,6 +11,7 @@ tags:
 /usr/sbin/groupadd mysql
 /usr/sbin/useradd -g mysql mysql
 ```
+<!-- more -->
 ## 2、创建binlog和库的存储路径并赋予mysql用户权限
 ``` shell
 mkdir -p /usr/server/mysql/binlog /www/data_mysql

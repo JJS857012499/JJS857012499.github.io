@@ -10,6 +10,7 @@ tags:
 ```` shell
 Please, commit your changes or stash them before you can merge.
 ````
+<!-- more -->
 ## stash
 通常遇到这个问题，你可以直接commit你的修改；但我这次不想这样。
 看看git stash是如何做的。

@@ -7,6 +7,7 @@ tags:
  - Linux
 ---
 提示：ERROR 1044 (42000): Access denied for user ''@'localhost' to database 'MySQL'。安装mysql后就，开始不知道密码是空，自己捣鼓了半天也没弄好。后来根据网上的资料，修改root的密码后，还是不行，大多数的操作方法如下：
+<!-- more -->
 关闭mysql
 ```shell
 service mysqld stop

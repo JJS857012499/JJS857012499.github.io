@@ -11,6 +11,7 @@ tags:
 tar zxvf jdk-7u79-linux-x64.gz  jdk1.7.0_79
 mv /alidata/backup/jdk1.7.0_79  /alidata/jdk/java7
 ```
+<!-- more -->
 ## 添加jdk7.0到系统环境变量
 ``` shell
 cp /etc/profile /etc/profile.bak #备份

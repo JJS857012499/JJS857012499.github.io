@@ -12,6 +12,7 @@ tags:
 /usr/sbin/groupadd www
 /usr/sbin/useradd -g www www
 ```
+<!-- more -->
 ## 配置nginx.conf
 ``` shell
 vim /usr/server/nginx-1.6.2/conf/nginx.conf

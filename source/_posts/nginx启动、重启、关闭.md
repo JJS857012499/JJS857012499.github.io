@@ -11,6 +11,7 @@ tags:
 cd usr/local/nginx/sbin
 ./nginx
 ```
+<!-- more -->
 ## 更改配置重启nginx　　
 kill -HUP 主进程号或进程号文件路径
 或者使用

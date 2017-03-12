@@ -6,6 +6,7 @@ tags: [Linux,maven]
 ---
 ## 下载maven
 [http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)
+<!-- more -->
 ## 解压
 ``` shell
 tar -xzvf apache-maven-3.0.5-bin.tar.gz

@@ -13,6 +13,7 @@ yum groupinstall -y "X Window System"
 yum groupinstall -y "Desktop"
 yum groupinstall -y "Chinese Support"
 ```
+<!-- more -->
 ## 安装vncserver并配置
 ### 安装vncserver
 ``` shell

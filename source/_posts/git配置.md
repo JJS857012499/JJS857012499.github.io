@@ -7,6 +7,7 @@ tags:
  - Linux
 ---
 当你安装Git后首先要做的事情是设置你的用户名称和e-mail地址。这是非常重要的，因为每次Git提交都会使用该信息。它被永远的嵌入到了你的提交中：提交代码的log里面会显示提交者的信息
+ <!-- more -->
  ``` shell
  git config --global user.name [username]
  git config --global user.email [email]

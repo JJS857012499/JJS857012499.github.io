@@ -5,6 +5,7 @@ categories: 云主机
 tags: [Linux,ubuntu,eclipse]
 ---
 背景：在ubuntu桌面系统下，安装的elipse很卡，查看资源占有也不高，查阅资料后才发现这是elipse与ubuntu桌面程序不兼容导致的
+<!-- more -->
 ## 解決方法一：
 编辑设置 /usr/share/applications/Eclipse.desktop
 ``` shell

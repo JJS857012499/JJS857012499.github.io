@@ -7,10 +7,10 @@ tags:
  - php
  - Linux
 ---
-
 ## 准备工作-下载所需软件
 * Apache  httpd-2.2.22-win32-x86-openssl-0.9.8t.msi
 * PHP       php-5.3.10-Win32-VC9-x86.zip
+<!-- more -->
 ## 安装软件
 ### 安装Apache:
 双击安装，与安装其他Windows软件没有什么区别，在填Server Infomation时，并没有特殊规定，只要输入的信息符合格式即可。

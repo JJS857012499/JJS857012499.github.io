@@ -10,6 +10,7 @@ tags:
 ```shell
 free -m
 ```
+<!-- more -->
 用以下命令清理内存
 ```shell
 echo 1 > /proc/sys/vm/drop_caches
