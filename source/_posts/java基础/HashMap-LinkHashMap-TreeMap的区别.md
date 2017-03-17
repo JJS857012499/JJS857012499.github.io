@@ -42,3 +42,5 @@ LinkedHashMap 是HashMap的一个子类，如果需要输出的顺序和输入�
 使用keySet()抽取key序列，将map中的所有keys生成一个Set。
 使用values()抽取value序列，将map中的所有values生成一个Collection。
 为什么一个生成Set，一个生成Collection？那是因为，key总是独一无二的，value允许重复。
+
+来源:[http://blog.csdn.net/fg2006/article/details/6411200](http://blog.csdn.net/fg2006/article/details/6411200)
