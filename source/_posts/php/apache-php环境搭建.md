@@ -1,7 +1,7 @@
 ---
 title: apache php环境搭建
 date: 2017-03-11 11:01:21
-categories:
+categories: php
 tags:
  - apache
  - php
