@@ -34,10 +34,10 @@ LinkedHashMap 是HashMap的一个子类，如果需要输出的顺序和输入�
 4、一般使用ArrayList。用LinkedList构造堆栈stack、队列queue。
 5、Map用 put(k,v) / get(k)，还可以使用containsKey()/containsValue()来检查其中是否含有某个key/value。
       HashMap会利用对象的hashCode来快速找到key。
-* hashing
+ hashing
       哈希码就是将对象的信息经过一些转变形成一个独一无二的int值，这个值存储在一个array中。
       我们都知道所有存储结构中，array查找速度是最快的。所以，可以加速查找。
-* 发生碰撞时，让array指向多个values。即，数组每个位置上又生成一个梿表。
+ 发生碰撞时，让array指向多个values。即，数组每个位置上又生成一个梿表。
 6、Map中元素，可以将key序列、value序列单独抽取出来。
 使用keySet()抽取key序列，将map中的所有keys生成一个Set。
 使用values()抽取value序列，将map中的所有values生成一个Collection。
