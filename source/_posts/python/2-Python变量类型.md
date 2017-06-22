@@ -60,9 +60,11 @@ print(list+tinylist) # 打印组合的元组
 ## Python元组
 元组是另一个数据类型，类似于List（列表）。
 元组用"()"标识。内部元素用逗号隔开。但是元组不能二次赋值，相当于只读列表。
+元组中只包含一个元素时，需要在元素后面添加逗号
 ```python
 tuple = ('jjs',23,33.3,'zh','16')
 tinytuple = (123,'jxj')
+tup1 = (50,)
 print(tuple) # 输出完整元组
 print(tuple[0]) # 输出元组的第一个元素
 print(tuple[1:3]) # 输出第二个至第三个的元素
