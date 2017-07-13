@@ -10,7 +10,7 @@ SELECT * from category_cert_require where CERT_NAME='aa';
 SELECT * from category_cert_require where CERT_NAME='AA';
 ```
 如上，两个查询的结果是一样的。
-[!logo](LERBY1SAEWYDWPT.png)
+![logo](LERBY1SAEWYDWPT.png)
 
 ## 通过查询资料发现需要设置collate（校对） 。 collate规则：
 * _bin: 表示的是binary case sensitive collation，也就是说是区分大小写的
@@ -19,7 +19,9 @@ SELECT * from category_cert_require where CERT_NAME='AA';
 
 ## 解决方法
 ### 可以将查询条件用binary()括起来。  比如：
+```mysql
 select * from TableA where binary columnA ='aaa';
+```
 ### 可以修改该字段的collation 为 binary
 比如：
 ```mysql
