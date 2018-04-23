@@ -282,7 +282,7 @@ mathjax:
 #baidu_analytics:
 
 # Duoshuo ShortName
-duoshuo_shortname: jjs857012499
+# duoshuo_shortname: jjs857012499
 
 # Disqus
 #disqus_shortname:
@@ -314,7 +314,7 @@ duoshuo_shortname: jjs857012499
 #add_this_id:
 
 # Share
-duoshuo_share: false
+# duoshuo_share: false
 
 # Google Webmaster tools verification setting
 # See: https://www.google.com/webmasters/
@@ -337,10 +337,10 @@ duoshuo_share: false
 # Make duoshuo show UA
 # user_id must NOT be null when admin_enable is true!
 # you can visit http://dev.duoshuo.com get duoshuo user id.
-duoshuo_info:
-  ua_enable: false
-  admin_enable: false
-  user_id: 3395386
+#duoshuo_info:
+#  ua_enable: false
+#  admin_enable: false
+#  user_id: 3395386
   #admin_nickname: Author
 
 
