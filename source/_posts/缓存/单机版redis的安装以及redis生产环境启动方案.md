@@ -57,7 +57,7 @@ chkconfig redis_6379 on
 ------------------------------------------------------------------------
 
 ## redis cli的使用
-
+```jshelllanguage
 redis-cli SHUTDOWN，连接本机的6379端口停止redis进程
 
 redis-cli -h 127.0.0.1 -p 6379 SHUTDOWN，制定要连接的ip和端口号
@@ -68,6 +68,7 @@ redis-cli，进入交互式命令行
 
 SET k1 v1
 GET k1
+```
 
 redis的技术，包括4块
 

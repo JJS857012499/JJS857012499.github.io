@@ -1,7 +1,7 @@
 ---
 title: ActivityMq安装
 date: 2017-03-17 15:05:40
-category: ActivityMq
+category: mq
 tags: [ActivityMq]
 ---
 ## 下载
