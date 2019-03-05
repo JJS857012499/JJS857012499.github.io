@@ -85,4 +85,4 @@ algolia:
     - title
     - slug
     - path
-    - content:strip
+#    - content:strip:truncate,0,500
