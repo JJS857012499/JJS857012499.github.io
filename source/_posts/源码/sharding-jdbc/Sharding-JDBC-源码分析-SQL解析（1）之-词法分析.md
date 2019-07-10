@@ -14,6 +14,8 @@ tags:
 首先我们从github checkout [sharding-jdbc](https://github.com/apache/incubator-shardingsphere)的源码,
 我基于3.1.0这个标签checkout了一份，并且做了一些注释，所以这些文章我都是基于这个版本的源码做分析，感兴趣的同学可以去checkout我带注释的源码看看[https://github.com/JJS857012499/incubator-shardingsphere](https://github.com/JJS857012499/incubator-shardingsphere)
 
+<!-- more -->
+
 # Lexer 词法分析器
 lexer词法分析器位于sharding-core项目的io.shardingsphere.core.parsing.lexer包下
 
@@ -205,6 +207,7 @@ public final class Dictionary {
 ```
 别的数据库词法分析器也是类似，这里就不一一枚举了，如果没有自己想要的数据库分析器，我们可以继承Lexer实现。
 Keyword + Literals.IDENTIFIER的解析是一起的，我们继续往下看。
+
 ## Literals 词法字面量标记
 词法字面量标记 分为6种
 * INT: 整数
@@ -510,12 +513,62 @@ Keyword + Literals.IDENTIFIER的解析核心代码
 
 ```
 
-
 ## Assist 词法辅助标记
 Assist分为两种
 * END : 结束符
 * ERROR: 错误符
 
+# LexerEngine 词法分析器引擎
+这个类主要是对lexer类做了一下封装，有个成员变量Lexer lexer，由构造函数传入不同数据库方言实现的Lexer，
+我们先看看他主要的方法#skipParentheses，为后面的SQL语句分析留个印象。
+```java
+@RequiredArgsConstructor
+public final class LexerEngine {
+    
+    private final Lexer lexer;
+        
+    /**
+     * 跳过括号内的所有语法标记
+     * skip all tokens that inside parentheses.
+     *
+     * @param sqlStatement SQL statement
+     * @return skipped string 跳过的字符串
+     */
+    public String skipParentheses(final SQLStatement sqlStatement) {
+        StringBuilder result = new StringBuilder("");
+        int count = 0; //记录多重括号问题，左括号加一，右括号减一，当count为0的时候才是闭合的情况
+        if (Symbol.LEFT_PAREN == lexer.getCurrentToken().getType()) {
+            final int beginPosition = lexer.getCurrentToken().getEndPosition();
+            result.append(Symbol.LEFT_PAREN.getLiterals());
+            lexer.nextToken();
+            while (true) {
+                if (equalAny(Symbol.QUESTION)) {
+                    sqlStatement.increaseParametersIndex();
+                }
+
+                //结束符，或者当前是右括号并且已经闭合的情况，跳出循环
+                if (Assist.END == lexer.getCurrentToken().getType() || (Symbol.RIGHT_PAREN == lexer.getCurrentToken().getType() && 0 == count)) {
+                    break;
+                }
+
+                //左括号加一，右括号减一
+                if (Symbol.LEFT_PAREN == lexer.getCurrentToken().getType()) {
+                    count++;
+                } else if (Symbol.RIGHT_PAREN == lexer.getCurrentToken().getType()) {
+                    count--;
+                }
+                lexer.nextToken();
+            }
+            result.append(lexer.getInput().substring(beginPosition, lexer.getCurrentToken().getEndPosition()));
+            lexer.nextToken();
+        }
+        return result.toString();
+    }
+}
+```
+
+# LexerEngineFactory LexerEngine 工厂类
+这个没什么好说，就是LexerEngine 工厂类,根据不同的DatebaseType 生成不同的LexerEngine实例。
 
 
 
