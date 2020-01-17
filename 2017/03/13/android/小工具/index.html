@@ -1,0 +1,892 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="拨打电话123public static void call(Context context, String phoneNumber) &amp;#123;        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(&amp;quot;tel:&amp;quot; + phoneNumber)));    &amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小工具">
+<meta property="og:url" content="http://jjs857012499.github.io/2017/03/13/android/小工具/index.html">
+<meta property="og:site_name" content="深水暗流">
+<meta property="og:description" content="拨打电话123public static void call(Context context, String phoneNumber) &amp;#123;        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(&amp;quot;tel:&amp;quot; + phoneNumber)));    &amp;#125;">
+<meta property="og:updated_time" content="2020-01-17T08:01:28.011Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小工具">
+<meta name="twitter:description" content="拨打电话123public static void call(Context context, String phoneNumber) &amp;#123;        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(&amp;quot;tel:&amp;quot; + phoneNumber)));    &amp;#125;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '02VN51U09E',
+      apiKey: '445f9ad88a8c5642d52b42b038dd011a',
+      indexName: 'jjs857012499.github.io',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与「${query}」相关的内容","hits_stats":" ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jjs857012499.github.io/2017/03/13/android/小工具/"/>
+
+
+
+
+
+  <title> 小工具 | 深水暗流 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">深水暗流</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">冰是睡着的水</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://jjs857012499.github.io/2017/03/13/android/小工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJS">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深水暗流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                小工具
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-13T22:08:04+08:00">
+                2017-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/03/13/android/小工具/" class="leancloud_visitors" data-flag-title="小工具">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>拨打电话<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public static void call(Context context, String phoneNumber) &#123;</div><div class="line">        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(&quot;tel:&quot; + phoneNumber)));</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>跳转至拨号界面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public static void callDial(Context context, String phoneNumber) &#123;</div><div class="line">        context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(&quot;tel:&quot; + phoneNumber)));</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>发送短信<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public static void sendSms(Context context, String phoneNumber,</div><div class="line">            String content) &#123;</div><div class="line">        Uri uri = Uri.parse(&quot;smsto:&quot;</div><div class="line">                + (TextUtils.isEmpty(phoneNumber) ? &quot;&quot; : phoneNumber));</div><div class="line">        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);</div><div class="line">        intent.putExtra(&quot;sms_body&quot;, TextUtils.isEmpty(content) ? &quot;&quot; : content);</div><div class="line">        context.startActivity(intent);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>唤醒屏幕并解锁<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public static void wakeUpAndUnlock(Context context)&#123;</div><div class="line">        KeyguardManager km= (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);</div><div class="line">        KeyguardManager.KeyguardLock kl = km.newKeyguardLock(&quot;unLock&quot;);</div><div class="line">        //解锁</div><div class="line">        kl.disableKeyguard();</div><div class="line">        //获取电源管理器对象</div><div class="line">        PowerManager pm=(PowerManager) context.getSystemService(Context.POWER_SERVICE);</div><div class="line">        //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag</div><div class="line">        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK,&quot;bright&quot;);</div><div class="line">        //点亮屏幕</div><div class="line">        wl.acquire();</div><div class="line">        //释放</div><div class="line">        wl.release();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>需要添加权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;android.permission.WAKE_LOCK&quot; /&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.DISABLE_KEYGUARD&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>判断当前App处于前台还是后台状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public static boolean isApplicationBackground(final Context context) &#123;</div><div class="line">        ActivityManager am = (ActivityManager) context</div><div class="line">                .getSystemService(Context.ACTIVITY_SERVICE);</div><div class="line">        @SuppressWarnings(&quot;deprecation&quot;)</div><div class="line">        List&lt;ActivityManager.RunningTaskInfo&gt; tasks = am.getRunningTasks(1);</div><div class="line">        if (!tasks.isEmpty()) &#123;</div><div class="line">            ComponentName topActivity = tasks.get(0).topActivity;</div><div class="line">            if (!topActivity.getPackageName().equals(context.getPackageName())) &#123;</div><div class="line">                return true;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>需要添加权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission</div><div class="line">     android:name=&quot;android.permission.GET_TASKS&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>判断当前手机是否处于锁屏(睡眠)状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public static boolean isSleeping(Context context) &#123;</div><div class="line">        KeyguardManager kgMgr = (KeyguardManager) context</div><div class="line">                .getSystemService(Context.KEYGUARD_SERVICE);</div><div class="line">        boolean isSleeping = kgMgr.inKeyguardRestrictedInputMode();</div><div class="line">        return isSleeping;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>判断当前是否有网络连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public static boolean isOnline(Context context) &#123;</div><div class="line">        ConnectivityManager manager = (ConnectivityManager) context</div><div class="line">                .getSystemService(Activity.CONNECTIVITY_SERVICE);</div><div class="line">        NetworkInfo info = manager.getActiveNetworkInfo();</div><div class="line">        if (info != null &amp;&amp; info.isConnected()) &#123;</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>判断当前是否是WIFI连接状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public static boolean isWifiConnected(Context context) &#123;</div><div class="line">    ConnectivityManager connectivityManager = (ConnectivityManager) context</div><div class="line">            .getSystemService(Context.CONNECTIVITY_SERVICE);</div><div class="line">    NetworkInfo wifiNetworkInfo = connectivityManager</div><div class="line">            .getNetworkInfo(ConnectivityManager.TYPE_WIFI);</div><div class="line">    if (wifiNetworkInfo.isConnected()) &#123;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">    return false;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>安装APK<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public static void installApk(Context context, File file) &#123;</div><div class="line">    Intent intent = new Intent();</div><div class="line">    intent.setAction(&quot;android.intent.action.VIEW&quot;);</div><div class="line">    intent.addCategory(&quot;android.intent.category.DEFAULT&quot;);</div><div class="line">    intent.setType(&quot;application/vnd.android.package-archive&quot;);</div><div class="line">    intent.setDataAndType(Uri.fromFile(file),</div><div class="line">            &quot;application/vnd.android.package-archive&quot;);</div><div class="line">    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</div><div class="line">    context.startActivity(intent);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>判断当前设备是否为手机<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public static boolean isPhone(Context context) &#123;</div><div class="line">    TelephonyManager telephony = (TelephonyManager) context</div><div class="line">            .getSystemService(Context.TELEPHONY_SERVICE);</div><div class="line">    if (telephony.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) &#123;</div><div class="line">        return false;</div><div class="line">    &#125; else &#123;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>获取当前设备宽高，单位px<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@SuppressWarnings(&quot;deprecation&quot;)</div><div class="line">public static int getDeviceWidth(Context context) &#123;</div><div class="line">    WindowManager manager = (WindowManager) context</div><div class="line">            .getSystemService(Context.WINDOW_SERVICE);</div><div class="line">    return manager.getDefaultDisplay().getWidth();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@SuppressWarnings(&quot;deprecation&quot;)</div><div class="line">public static int getDeviceHeight(Context context) &#123;</div><div class="line">    WindowManager manager = (WindowManager) context</div><div class="line">            .getSystemService(Context.WINDOW_SERVICE);</div><div class="line">    return manager.getDefaultDisplay().getHeight();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>获取当前设备的IMEI，需要与上面的isPhone()一起使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@TargetApi(Build.VERSION_CODES.CUPCAKE)</div><div class="line">public static String getDeviceIMEI(Context context) &#123;</div><div class="line">    String deviceId;</div><div class="line">    if (isPhone(context)) &#123;</div><div class="line">        TelephonyManager telephony = (TelephonyManager) context</div><div class="line">                .getSystemService(Context.TELEPHONY_SERVICE);</div><div class="line">        deviceId = telephony.getDeviceId();</div><div class="line">    &#125; else &#123;</div><div class="line">        deviceId = Settings.Secure.getString(context.getContentResolver(),</div><div class="line">                Settings.Secure.ANDROID_ID);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    return deviceId;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>获取当前设备的MAC地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public static String getMacAddress(Context context) &#123;</div><div class="line">    String macAddress;</div><div class="line">    WifiManager wifi = (WifiManager) context</div><div class="line">            .getSystemService(Context.WIFI_SERVICE);</div><div class="line">    WifiInfo info = wifi.getConnectionInfo();</div><div class="line">    macAddress = info.getMacAddress();</div><div class="line">    if (null == macAddress) &#123;</div><div class="line">        return &quot;&quot;;</div><div class="line">    &#125;</div><div class="line">    macAddress = macAddress.replace(&quot;:&quot;, &quot;&quot;);</div><div class="line">    return macAddress;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>获取当前程序的版本号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public static String getAppVersion(Context context) &#123;</div><div class="line">    String version = &quot;0&quot;;</div><div class="line">    try &#123;</div><div class="line">        version = context.getPackageManager().getPackageInfo(</div><div class="line">                context.getPackageName(), 0).versionName;</div><div class="line">    &#125; catch (PackageManager.NameNotFoundException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    return version;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>收集设备信息，用于信息统计分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">public static Properties collectDeviceInfo(Context context) &#123;</div><div class="line">        Properties mDeviceCrashInfo = new Properties();</div><div class="line">        try &#123;</div><div class="line">            PackageManager pm = context.getPackageManager();</div><div class="line">            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),</div><div class="line">                    PackageManager.GET_ACTIVITIES);</div><div class="line">            if (pi != null) &#123;</div><div class="line">                mDeviceCrashInfo.put(VERSION_NAME,</div><div class="line">                        pi.versionName == null ? &quot;not set&quot; : pi.versionName);</div><div class="line">                mDeviceCrashInfo.put(VERSION_CODE, pi.versionCode);</div><div class="line">            &#125;</div><div class="line">        &#125; catch (PackageManager.NameNotFoundException e) &#123;</div><div class="line">            Log.e(TAG, &quot;Error while collect package info&quot;, e);</div><div class="line">        &#125;</div><div class="line">        Field[] fields = Build.class.getDeclaredFields();</div><div class="line">        for (Field field : fields) &#123;</div><div class="line">            try &#123;</div><div class="line">                field.setAccessible(true);</div><div class="line">                mDeviceCrashInfo.put(field.getName(), field.get(null));</div><div class="line">            &#125; catch (Exception e) &#123;</div><div class="line">                Log.e(TAG, &quot;Error while collect crash info&quot;, e);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return mDeviceCrashInfo;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">public static String collectDeviceInfoStr(Context context) &#123;</div><div class="line">        Properties prop = collectDeviceInfo(context);</div><div class="line">        Set deviceInfos = prop.keySet();</div><div class="line">        StringBuilder deviceInfoStr = new StringBuilder(&quot;&#123;\n&quot;);</div><div class="line">        for (Iterator iter = deviceInfos.iterator(); iter.hasNext();) &#123;</div><div class="line">            Object item = iter.next();</div><div class="line">            deviceInfoStr.append(&quot;\t\t\t&quot; + item + &quot;:&quot; + prop.get(item)</div><div class="line">                    + &quot;, \n&quot;);</div><div class="line">        &#125;</div><div class="line">        deviceInfoStr.append(&quot;&#125;&quot;);</div><div class="line">        return deviceInfoStr.toString();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>是否有SD卡<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public static boolean haveSDCard() &#123;</div><div class="line">        return android.os.Environment.getExternalStorageState().equals(</div><div class="line">                android.os.Environment.MEDIA_MOUNTED);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>动态隐藏软键盘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">@TargetApi(Build.VERSION_CODES.CUPCAKE)</div><div class="line">    public static void hideSoftInput(Activity activity) &#123;</div><div class="line">        View view = activity.getWindow().peekDecorView();</div><div class="line">        if (view != null) &#123;</div><div class="line">            InputMethodManager inputmanger = (InputMethodManager) activity</div><div class="line">                    .getSystemService(Context.INPUT_METHOD_SERVICE);</div><div class="line">            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @TargetApi(Build.VERSION_CODES.CUPCAKE)</div><div class="line">public static void hideSoftInput(Context context, EditText edit) &#123;</div><div class="line">        edit.clearFocus();</div><div class="line">        InputMethodManager inputmanger = (InputMethodManager) context</div><div class="line">                .getSystemService(Context.INPUT_METHOD_SERVICE);</div><div class="line">        inputmanger.hideSoftInputFromWindow(edit.getWindowToken(), 0);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>动态显示软键盘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">@TargetApi(Build.VERSION_CODES.CUPCAKE)</div><div class="line">public static void showSoftInput(Context context, EditText edit) &#123;</div><div class="line">        edit.setFocusable(true);</div><div class="line">        edit.setFocusableInTouchMode(true);</div><div class="line">        edit.requestFocus();</div><div class="line">        InputMethodManager inputManager = (InputMethodManager) context</div><div class="line">                .getSystemService(Context.INPUT_METHOD_SERVICE);</div><div class="line">        inputManager.showSoftInput(edit, 0);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">动态显示或者是隐藏软键盘</div><div class="line"></div><div class="line"></div><div class="line">@TargetApi(Build.VERSION_CODES.CUPCAKE)</div><div class="line">public static void toggleSoftInput(Context context, EditText edit) &#123;</div><div class="line">        edit.setFocusable(true);</div><div class="line">        edit.setFocusableInTouchMode(true);</div><div class="line">        edit.requestFocus();</div><div class="line">        InputMethodManager inputManager = (InputMethodManager) context</div><div class="line">                .getSystemService(Context.INPUT_METHOD_SERVICE);</div><div class="line">        inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>主动回到Home，后台运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public static void goHome(Context context) &#123;</div><div class="line">        Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);</div><div class="line">        mHomeIntent.addCategory(Intent.CATEGORY_HOME);</div><div class="line">        mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK</div><div class="line">                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);</div><div class="line">        context.startActivity(mHomeIntent);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>获取状态栏高度<br>注意，要在onWindowFocusChanged中调用，在onCreate中获取高度为0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@TargetApi(Build.VERSION_CODES.CUPCAKE)</div><div class="line">public static int getStatusBarHeight(Activity activity) &#123;</div><div class="line">    Rect frame = new Rect();</div><div class="line">    activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);</div><div class="line">        return frame.top;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>获取状态栏高度＋标题栏(ActionBar)高度<br>(注意，如果没有ActionBar，那么获取的高度将和上面的是一样的，只有状态栏的高度)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public static int getTopBarHeight(Activity activity) &#123;</div><div class="line">        return activity.getWindow().findViewById(Window.ID_ANDROID_CONTENT)</div><div class="line">                .getTop();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>获取MCC+MNC代码 (SIM卡运营商国家代码和运营商网络代码)<br>仅当用户已在网络注册时有效, CDMA 可能会无效（中国移动：46000 46002, 中国联通：46001,中国电信：46003）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static String getNetworkOperator(Context context) &#123;</div><div class="line">        TelephonyManager telephonyManager = (TelephonyManager) context</div><div class="line">                .getSystemService(Context.TELEPHONY_SERVICE);</div><div class="line">        return telephonyManager.getNetworkOperator();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>返回移动网络运营商的名字<br>(例：中国联通、中国移动、中国电信) 仅当用户已在网络注册时有效, CDMA 可能会无效)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static String getNetworkOperatorName(Context context) &#123;</div><div class="line">        TelephonyManager telephonyManager = (TelephonyManager) context</div><div class="line">                .getSystemService(Context.TELEPHONY_SERVICE);</div><div class="line">        return telephonyManager.getNetworkOperatorName();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>返回移动终端类型<br>PHONE_TYPE_NONE :0 手机制式未知<br>PHONE_TYPE_GSM :1 手机制式为GSM，移动和联通<br>PHONE_TYPE_CDMA :2 手机制式为CDMA，电信<br>PHONE_TYPE_SIP:3<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static int getPhoneType(Context context) &#123;</div><div class="line">        TelephonyManager telephonyManager = (TelephonyManager) context</div><div class="line">                .getSystemService(Context.TELEPHONY_SERVICE);</div><div class="line">        return telephonyManager.getPhoneType();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>判断手机连接的网络类型(2G,3G,4G)<br>联通的3G为UMTS或HSDPA，移动和联通的2G为GPRS或EGDE，电信的2G为CDMA，电信的3G为EVDO<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">public class Constants &#123;</div><div class="line">    /**</div><div class="line">     * Unknown network class</div><div class="line">     */</div><div class="line">    public static final int NETWORK_CLASS_UNKNOWN = 0;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * wifi net work</div><div class="line">     */</div><div class="line">    public static final int NETWORK_WIFI = 1;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * &quot;2G&quot; networks</div><div class="line">     */</div><div class="line">    public static final int NETWORK_CLASS_2_G = 2;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * &quot;3G&quot; networks</div><div class="line">     */</div><div class="line">    public static final int NETWORK_CLASS_3_G = 3;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * &quot;4G&quot; networks</div><div class="line">     */</div><div class="line">    public static final int NETWORK_CLASS_4_G = 4;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">public static int getNetWorkClass(Context context) &#123;</div><div class="line">        TelephonyManager telephonyManager = (TelephonyManager) context</div><div class="line">                .getSystemService(Context.TELEPHONY_SERVICE);</div><div class="line"></div><div class="line">        switch (telephonyManager.getNetworkType()) &#123;</div><div class="line">        case TelephonyManager.NETWORK_TYPE_GPRS:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_EDGE:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_CDMA:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_1xRTT:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_IDEN:</div><div class="line">            return Constants.NETWORK_CLASS_2_G;</div><div class="line"></div><div class="line">        case TelephonyManager.NETWORK_TYPE_UMTS:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_EVDO_0:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_EVDO_A:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_HSDPA:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_HSUPA:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_HSPA:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_EVDO_B:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_EHRPD:</div><div class="line">        case TelephonyManager.NETWORK_TYPE_HSPAP:</div><div class="line">            return Constants.NETWORK_CLASS_3_G;</div><div class="line"></div><div class="line">        case TelephonyManager.NETWORK_TYPE_LTE:</div><div class="line">            return Constants.NETWORK_CLASS_4_G;</div><div class="line"></div><div class="line">        default:</div><div class="line">            return Constants.NETWORK_CLASS_UNKNOWN;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>判断当前手机的网络类型(WIFI还是2,3,4G)<br>需要用到上面的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public static int getNetWorkStatus(Context context) &#123;</div><div class="line">        int netWorkType = Constants.NETWORK_CLASS_UNKNOWN;</div><div class="line"></div><div class="line">        ConnectivityManager connectivityManager = (ConnectivityManager) context</div><div class="line">                .getSystemService(Context.CONNECTIVITY_SERVICE);</div><div class="line">        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();</div><div class="line"></div><div class="line">        if (networkInfo != null &amp;&amp; networkInfo.isConnected()) &#123;</div><div class="line">            int type = networkInfo.getType();</div><div class="line"></div><div class="line">            if (type == ConnectivityManager.TYPE_WIFI) &#123;</div><div class="line">                netWorkType = Constants.NETWORK_WIFI;</div><div class="line">            &#125; else if (type == ConnectivityManager.TYPE_MOBILE) &#123;</div><div class="line">                netWorkType = getNetWorkClass(context);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return netWorkType;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>px-dp转换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public static int dip2px(Context context, float dpValue) &#123;</div><div class="line">    final float scale = context.getResources().getDisplayMetrics().density;</div><div class="line">    return (int) (dpValue * scale + 0.5f);</div><div class="line">&#125;</div><div class="line"></div><div class="line">public static int px2dip(Context context, float pxValue) &#123;</div><div class="line">    final float scale = context.getResources().getDisplayMetrics().density;</div><div class="line">    return (int) (pxValue / scale + 0.5f);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>px-sp转换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public static int px2sp(Context context, float pxValue) &#123;</div><div class="line">        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;</div><div class="line">        return (int) (pxValue / fontScale + 0.5f);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">public static int sp2px(Context context, float spValue) &#123;</div><div class="line">        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;</div><div class="line">        return (int) (spValue * fontScale + 0.5f);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/13/云主机/mysql远程连接/" rel="next" title="mysql远程连接">
+                <i class="fa fa-chevron-left"></i> mysql远程连接
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/13/android/Android自动填写获取到的验证码/" rel="prev" title="Android自动填写获取到的验证码">
+                Android自动填写获取到的验证码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="JJS" />
+          <p class="site-author-name" itemprop="name">JJS</p>
+           
+              <p class="site-description motion-element" itemprop="description">一个用gitpage来当笔记的家伙</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">96</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JJS</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("V75crFg32NcD1gBrRYa7QohI-gzGzoHsz", "s89dcpOqjm5SqjxoCWVpWR2e");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

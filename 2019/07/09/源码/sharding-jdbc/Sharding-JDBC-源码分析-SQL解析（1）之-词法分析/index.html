@@ -1,0 +1,951 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="源码,数据中间件,sharding-jdbc,词法分析," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言学习数据中间件的时候，我们避免不了要学习SQL解析引擎，就从最基础的词法分析一步一步解读下去。首先我们从github checkout sharding-jdbc的源码,我基于3.1.0这个标签checkout了一份，并且做了一些注释，所以这些文章我都是基于这个版本的源码做分析，感兴趣的同学可以去checkout我带注释的源码看看https://github.com/JJS857012499/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sharding-JDBC 源码分析 -- SQL解析（1）之 词法分析">
+<meta property="og:url" content="http://jjs857012499.github.io/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/index.html">
+<meta property="og:site_name" content="深水暗流">
+<meta property="og:description" content="前言学习数据中间件的时候，我们避免不了要学习SQL解析引擎，就从最基础的词法分析一步一步解读下去。首先我们从github checkout sharding-jdbc的源码,我基于3.1.0这个标签checkout了一份，并且做了一些注释，所以这些文章我都是基于这个版本的源码做分析，感兴趣的同学可以去checkout我带注释的源码看看https://github.com/JJS857012499/">
+<meta property="og:image" content="http://jjs857012499.github.io/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/1562642225.jpg">
+<meta property="og:image" content="http://jjs857012499.github.io/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/1562643150.jpg">
+<meta property="og:image" content="http://jjs857012499.github.io/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/1562651407.jpg">
+<meta property="og:updated_time" content="2020-01-17T08:01:28.991Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sharding-JDBC 源码分析 -- SQL解析（1）之 词法分析">
+<meta name="twitter:description" content="前言学习数据中间件的时候，我们避免不了要学习SQL解析引擎，就从最基础的词法分析一步一步解读下去。首先我们从github checkout sharding-jdbc的源码,我基于3.1.0这个标签checkout了一份，并且做了一些注释，所以这些文章我都是基于这个版本的源码做分析，感兴趣的同学可以去checkout我带注释的源码看看https://github.com/JJS857012499/">
+<meta name="twitter:image" content="http://jjs857012499.github.io/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/1562642225.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '02VN51U09E',
+      apiKey: '445f9ad88a8c5642d52b42b038dd011a',
+      indexName: 'jjs857012499.github.io',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与「${query}」相关的内容","hits_stats":" ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jjs857012499.github.io/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/"/>
+
+
+
+
+
+  <title> Sharding-JDBC 源码分析 -- SQL解析（1）之 词法分析 | 深水暗流 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">深水暗流</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">冰是睡着的水</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://jjs857012499.github.io/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJS">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深水暗流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Sharding-JDBC 源码分析 -- SQL解析（1）之 词法分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-09T10:06:46+08:00">
+                2019-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/源码/" itemprop="url" rel="index">
+                    <span itemprop="name">源码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/" class="leancloud_visitors" data-flag-title="Sharding-JDBC 源码分析 -- SQL解析（1）之 词法分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>学习数据中间件的时候，我们避免不了要学习SQL解析引擎，就从最基础的词法分析一步一步解读下去。<br>首先我们从github checkout <a href="https://github.com/apache/incubator-shardingsphere" target="_blank" rel="external">sharding-jdbc</a>的源码,<br>我基于3.1.0这个标签checkout了一份，并且做了一些注释，所以这些文章我都是基于这个版本的源码做分析，感兴趣的同学可以去checkout我带注释的源码看看<a href="https://github.com/JJS857012499/incubator-shardingsphere" target="_blank" rel="external">https://github.com/JJS857012499/incubator-shardingsphere</a></p>
+<a id="more"></a>
+<h1 id="Lexer-词法分析器"><a href="#Lexer-词法分析器" class="headerlink" title="Lexer 词法分析器"></a>Lexer 词法分析器</h1><p>lexer词法分析器位于sharding-core项目的io.shardingsphere.core.parsing.lexer包下</p>
+<p>lexer.java 部分源码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Lexer</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 输入sql语句</div><div class="line">     */</div><div class="line">    <span class="meta">@Getter</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String input;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 词法标记字典</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Dictionary dictionary;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 解析SQL的offer</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> offset;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 当前的词法标记</div><div class="line">     */</div><div class="line">    <span class="meta">@Getter</span></div><div class="line">    <span class="keyword">private</span> Token currentToken;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 分析下个词法标记</div><div class="line">     * Analyse next token.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">nextToken</span><span class="params">()</span> </span>&#123;</div><div class="line">        skipIgnoredToken();</div><div class="line">        <span class="keyword">if</span> (isVariableBegin()) &#123;</div><div class="line">            <span class="comment">//变量</span></div><div class="line">            currentToken = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).scanVariable();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isNCharBegin()) &#123;</div><div class="line">            <span class="comment">// N</span></div><div class="line">            currentToken = <span class="keyword">new</span> Tokenizer(input, dictionary, ++offset).scanChars();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isIdentifierBegin()) &#123;</div><div class="line">            <span class="comment">// Keyword + Literals.IDENTIFIER，判断是单词、'`' 、'_'、'$'</span></div><div class="line">            currentToken = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).scanIdentifier();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isHexDecimalBegin()) &#123;</div><div class="line">            <span class="comment">// 16进制</span></div><div class="line">            currentToken = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).scanHexDecimal();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isNumberBegin()) &#123;</div><div class="line">            <span class="comment">// 数字</span></div><div class="line">            currentToken = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).scanNumber();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isSymbolBegin()) &#123;</div><div class="line">            <span class="comment">// 符号</span></div><div class="line">            currentToken = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).scanSymbol();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isCharsBegin()) &#123;</div><div class="line">            <span class="comment">// 字符串</span></div><div class="line">            currentToken = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).scanChars();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isEnd()) &#123;</div><div class="line">            <span class="comment">// 结束</span></div><div class="line">            currentToken = <span class="keyword">new</span> Token(Assist.END, <span class="string">""</span>, offset);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">//sql 语法错误</span></div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> SQLParsingException(<span class="keyword">this</span>, Assist.ERROR);</div><div class="line">        &#125;</div><div class="line">        offset = currentToken.getEndPosition();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 跳过忽略的词法标记</div><div class="line">     * 1、空格</div><div class="line">     * 2、sql hint</div><div class="line">     * 3、注释</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">skipIgnoredToken</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 空格</span></div><div class="line">        offset = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).skipWhitespace();</div><div class="line">        <span class="comment">// hint （例如mysql的的 sql_no_cache 等等）</span></div><div class="line">        <span class="keyword">while</span> (isHintBegin()) &#123;</div><div class="line">            offset = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).skipHint();</div><div class="line">            offset = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).skipWhitespace();</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 注释</span></div><div class="line">        <span class="keyword">while</span> (isCommentBegin()) &#123;</div><div class="line">            offset = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).skipComment();</div><div class="line">            offset = <span class="keyword">new</span> Tokenizer(input, dictionary, offset).skipWhitespace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Lexer 词法分析器有四个字段，分别是输入的SQL语句（input）、词法标记字典（dictionary）、解析SQL的偏移量（offer）和当前的词法标记（currentToken）。<br>Lexer词法分析器的原理：顺序解析SQL,将字符串拆解成N个词法。<br>实现方式：通过不断调用Lexer#nextToken()方法，不断分析当前偏移量（offer）下的Token（词法标记），在#nextToken()方法中，我们可以看到他通过调用#skipIgnoredToken()方法跳过忽略的token，通过isXX()方法判断下一个Token类型后，交给Tokenizer标记器进行分词处理并返回Token。</p>
+<h1 id="Token-词法标记"><a href="#Token-词法标记" class="headerlink" title="Token 词法标记"></a>Token 词法标记</h1><p>Token有三个属性</p>
+<ul>
+<li>TokenType type ：词法标记类型</li>
+<li>String literals ：词法字面量</li>
+<li>int endPosition ：词法字面量（literals） 在SQL的结束位置</li>
+</ul>
+<h2 id="TokenType-词法标记类型"><a href="#TokenType-词法标记类型" class="headerlink" title="TokenType 词法标记类型"></a>TokenType 词法标记类型</h2><p>TokenType 词法标记类型有四大类</p>
+<ul>
+<li>Keywork: 词法关键字标记， SQL关键字</li>
+<li>Literals: 词法字面量标记， 数字类型、词法关键字（表名，字段等）、变量</li>
+<li>Symbol： 词法符号标记， 运算符以及括号、中括号、花括号</li>
+<li>Assist：词法辅助标记，结束符号，错误<br><img src="/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/1562642225.jpg" alt="logo"></li>
+</ul>
+<h2 id="Keyword-词法关键字标记"><a href="#Keyword-词法关键字标记" class="headerlink" title="Keyword 词法关键字标记"></a>Keyword 词法关键字标记</h2><p>不同的数据方言会有不同的关键字，所以Keyword定义为接口，他的实现有DefaultKeyword（默认关键字标记）和不同数据库关键字标记（h2、mysql、oracle、postgresql、sqlserver等等）。<br><img src="/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/1562643150.jpg" alt="Keywork"><br><img src="/2019/07/09/源码/sharding-jdbc/Sharding-JDBC-源码分析-SQL解析（1）之-词法分析/1562651407.jpg" alt="Lexer"></p>
+<p>我们看看MySQLLexer类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MySQLLexer</span> <span class="keyword">extends</span> <span class="title">Lexer</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 词法标记字典，因为是mysql，所有加载的是Mysql关键字标记</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Dictionary dictionary = <span class="keyword">new</span> Dictionary(MySQLKeyword.values());</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MySQLLexer</span><span class="params">(<span class="keyword">final</span> String input)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(input, dictionary);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isHintBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'/'</span> == getCurrentChar(<span class="number">0</span>) &amp;&amp; <span class="string">'*'</span> == getCurrentChar(<span class="number">1</span>) &amp;&amp; <span class="string">'!'</span> == getCurrentChar(<span class="number">2</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isCommentBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'#'</span> == getCurrentChar(<span class="number">0</span>) || <span class="keyword">super</span>.isCommentBegin();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isVariableBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'@'</span> == getCurrentChar(<span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Dictionary.java类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Dictionary</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 词法标记字典集合</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Keyword&gt; tokens = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">1024</span>);</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> dialectKeywords</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dictionary</span><span class="params">(<span class="keyword">final</span> Keyword... dialectKeywords)</span> </span>&#123;</div><div class="line">        fill(dialectKeywords);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 填充标记关键字</div><div class="line">     * 加入默认标记关键字后再加入指定的标记关键字</div><div class="line">     * <span class="doctag">@param</span> dialectKeywords</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">fill</span><span class="params">(<span class="keyword">final</span> Keyword... dialectKeywords)</span> </span>&#123;</div><div class="line">        <span class="comment">//加入默认标记关键字</span></div><div class="line">        <span class="keyword">for</span> (DefaultKeyword each : DefaultKeyword.values()) &#123;</div><div class="line">            tokens.put(each.name(), each);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//加入指定的标记关键字</span></div><div class="line">        <span class="keyword">for</span> (Keyword each : dialectKeywords) &#123;</div><div class="line">            tokens.put(each.toString(), each);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function">TokenType <span class="title">findTokenType</span><span class="params">(<span class="keyword">final</span> String literals, <span class="keyword">final</span> TokenType defaultTokenType)</span> </span>&#123;</div><div class="line">        String key = <span class="keyword">null</span> == literals ? <span class="keyword">null</span> : literals.toUpperCase();</div><div class="line">        <span class="keyword">return</span> tokens.containsKey(key) ? tokens.get(key) : defaultTokenType;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function">TokenType <span class="title">findTokenType</span><span class="params">(<span class="keyword">final</span> String literals)</span> </span>&#123;</div><div class="line">        String key = <span class="keyword">null</span> == literals ? <span class="keyword">null</span> : literals.toUpperCase();</div><div class="line">        <span class="keyword">if</span> (tokens.containsKey(key)) &#123;</div><div class="line">            <span class="keyword">return</span> tokens.get(key);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>别的数据库词法分析器也是类似，这里就不一一枚举了，如果没有自己想要的数据库分析器，我们可以继承Lexer实现。<br>Keyword + Literals.IDENTIFIER的解析是一起的，我们继续往下看。</p>
+<h2 id="Literals-词法字面量标记"><a href="#Literals-词法字面量标记" class="headerlink" title="Literals 词法字面量标记"></a>Literals 词法字面量标记</h2><p>词法字面量标记 分为6种</p>
+<ul>
+<li>INT: 整数</li>
+<li>FLOAT: 浮点数</li>
+<li>HEX: 16进制</li>
+<li>chars: 字符串</li>
+<li>IDENTIFIER: 词法关键词</li>
+<li>VARIABLE: 变量</li>
+</ul>
+<h3 id="Literals-VARIABLE-词法变量"><a href="#Literals-VARIABLE-词法变量" class="headerlink" title="Literals.VARIABLE 词法变量"></a>Literals.VARIABLE 词法变量</h3><p>词法变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// MySQLLexer.java</span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isVariableBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">'@'</span> == getCurrentChar(<span class="number">0</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//Lexer.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 扫描词法变量</div><div class="line"> * 例如：</div><div class="line"> * select * from commodity.mall_commodity_info where PRODUCT_ID=<span class="doctag">@id</span> 的 <span class="doctag">@id</span></div><div class="line"> * select @<span class="doctag">@version</span> 的 @<span class="doctag">@version</span></div><div class="line"> * scan variable.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> variable token</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> Token <span class="title">scanVariable</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> length = <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (<span class="string">'@'</span> == charAt(offset + <span class="number">1</span>)) &#123;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">while</span> (isVariableChar(charAt(offset + length))) &#123;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Token(Literals.VARIABLE, input.substring(offset, offset + length), offset + length);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isVariableChar</span><span class="params">(<span class="keyword">final</span> <span class="keyword">char</span> ch)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> isIdentifierChar(ch) || <span class="string">'.'</span> == ch;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Literals-IDENTIFIER-词法关键词"><a href="#Literals-IDENTIFIER-词法关键词" class="headerlink" title="Literals.IDENTIFIER 词法关键词"></a>Literals.IDENTIFIER 词法关键词</h3><p>词法关键词，例如：数据库名、表名、字段等等<br>Keyword + Literals.IDENTIFIER的解析核心代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Lexer.java</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isIdentifierBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> isIdentifierBegin(getCurrentChar(<span class="number">0</span>));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isIdentifierBegin</span><span class="params">(<span class="keyword">final</span> <span class="keyword">char</span> ch)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> CharType.isAlphabet(ch) || <span class="string">'`'</span> == ch || <span class="string">'_'</span> == ch || <span class="string">'$'</span> == ch;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//CharType.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line">* 是否是字母</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isAlphabet</span><span class="params">(<span class="keyword">final</span> <span class="keyword">char</span> ch)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> ch &gt;= <span class="string">'A'</span> &amp;&amp; ch &lt;= <span class="string">'Z'</span> || ch &gt;= <span class="string">'a'</span> &amp;&amp; ch &lt;= <span class="string">'z'</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Tokenizer.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 扫描 标识符</div><div class="line"> * scan identifier.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> identifier token</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> Token <span class="title">scanIdentifier</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// `字段`， 例如 select `id` from table_xx 中的 `id`</span></div><div class="line">    <span class="keyword">if</span> (<span class="string">'`'</span> == charAt(offset)) &#123;</div><div class="line">        <span class="keyword">int</span> length = getLengthUntilTerminatedChar(<span class="string">'`'</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Token(Literals.IDENTIFIER, input.substring(offset, offset + length), offset + length);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (<span class="string">'"'</span> == charAt(offset)) &#123;</div><div class="line">        <span class="keyword">int</span> length = getLengthUntilTerminatedChar(<span class="string">'"'</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Token(Literals.IDENTIFIER, input.substring(offset, offset + length), offset + length);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (<span class="string">'['</span> == charAt(offset)) &#123;</div><div class="line">        <span class="keyword">int</span> length = getLengthUntilTerminatedChar(<span class="string">']'</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Token(Literals.IDENTIFIER, input.substring(offset, offset + length), offset + length);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> length = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (isIdentifierChar(charAt(offset + length))) &#123;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    String literals = input.substring(offset, offset + length);</div><div class="line">    <span class="keyword">if</span> (isAmbiguousIdentifier(literals)) &#123;</div><div class="line">        <span class="comment">// 模棱两可的， order 或者 group</span></div><div class="line">        <span class="comment">//如果空格后面跟着 by 关键字 则TokenType是dictionary里面的KeyWord， 否则Literals.IDENTIFIER</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Token(processAmbiguousIdentifier(offset + length, literals), literals, offset + length);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// TokenType：根据literals 获取 dictionary里面的Keyword， 否则为默认Literals.IDENTIFIER</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Token(dictionary.findTokenType(literals, Literals.IDENTIFIER), literals, offset + length);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 计算到结束符的长度</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> terminatedChar</div><div class="line"> * <span class="doctag">@return</span></div><div class="line"> * <span class="doctag">@see</span> #hasEscapeChar,  select * from table_xx as `a``b` 这里连续的"``"并非结束符，如果此时传递的是"'",则会误判，所以这里加了hasEscapeChar判断</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getLengthUntilTerminatedChar</span><span class="params">(<span class="keyword">final</span> <span class="keyword">char</span> terminatedChar)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> length = <span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span> (terminatedChar != charAt(offset + length) || hasEscapeChar(terminatedChar, offset + length)) &#123;</div><div class="line">        <span class="keyword">if</span> (offset + length &gt;= input.length()) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnterminatedCharException(terminatedChar);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (hasEscapeChar(terminatedChar, offset + length)) &#123;</div><div class="line">            length++;</div><div class="line">        &#125;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> length + <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 是否有 Escape 字符</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> charIdentifier</div><div class="line"> * <span class="doctag">@param</span> offset</div><div class="line"> * <span class="doctag">@return</span></div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">hasEscapeChar</span><span class="params">(<span class="keyword">final</span> <span class="keyword">char</span> charIdentifier, <span class="keyword">final</span> <span class="keyword">int</span> offset)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> charIdentifier == charAt(offset) &amp;&amp; charIdentifier == charAt(offset + <span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Literals-HEX-16进制"><a href="#Literals-HEX-16进制" class="headerlink" title="Literals.HEX 16进制"></a>Literals.HEX 16进制</h3><p>16进制,表示0x开头，后面跟着 -（负号）、 A~F、a~f和数字<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//Lexer.java</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isHexDecimalBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">'0'</span> == getCurrentChar(<span class="number">0</span>) &amp;&amp; <span class="string">'x'</span> == getCurrentChar(<span class="number">1</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * scan hex decimal.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> hex decimal token</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> Token <span class="title">scanHexDecimal</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> length = HEX_BEGIN_SYMBOL_LENGTH;</div><div class="line">    <span class="comment">//处理负号</span></div><div class="line">    <span class="keyword">if</span> (<span class="string">'-'</span> == charAt(offset + length)) &#123;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">while</span> (isHex(charAt(offset + length))) &#123;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Token(Literals.HEX, input.substring(offset, offset + length), offset + length);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isHex</span><span class="params">(<span class="keyword">final</span> <span class="keyword">char</span> ch)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> ch &gt;= <span class="string">'A'</span> &amp;&amp; ch &lt;= <span class="string">'F'</span> || ch &gt;= <span class="string">'a'</span> &amp;&amp; ch &lt;= <span class="string">'f'</span> || CharType.isDigital(ch);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Literals-INT-数字"><a href="#Literals-INT-数字" class="headerlink" title="Literals.INT 数字"></a>Literals.INT 数字</h3><p>数字，和Literals.FLOAT一起分析<br>有如下情况</p>
+<ul>
+<li>123</li>
+<li>-123</li>
+</ul>
+<h3 id="Literals-FLOAT-浮点数"><a href="#Literals-FLOAT-浮点数" class="headerlink" title="Literals.FLOAT 浮点数"></a>Literals.FLOAT 浮点数</h3><p>浮点数，有如下情况</p>
+<ul>
+<li>.1 :表示 0.1</li>
+<li>-. :表示 -0.1</li>
+<li>-1 :表示 -1</li>
+<li>3e2:表示科学计数法的3*10^2</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//Lexer.java</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isNumberBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> CharType.isDigital(getCurrentChar(<span class="number">0</span>))</div><div class="line">            || (<span class="string">'.'</span> == getCurrentChar(<span class="number">0</span>) &amp;&amp; CharType.isDigital(getCurrentChar(<span class="number">1</span>)) &amp;&amp; !isIdentifierBegin(getCurrentChar(-<span class="number">1</span>))</div><div class="line">            || (<span class="string">'-'</span> == getCurrentChar(<span class="number">0</span>) &amp;&amp; (<span class="string">'.'</span> == getCurrentChar(<span class="number">1</span>) || CharType.isDigital(getCurrentChar(<span class="number">1</span>)))));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//Tokenizer.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * scan number.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> number token</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> Token <span class="title">scanNumber</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> length = <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span> (<span class="string">'-'</span> == charAt(offset + length)) &#123;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    length += getDigitalLength(offset + length);</div><div class="line">    <span class="keyword">boolean</span> isFloat = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (<span class="string">'.'</span> == charAt(offset + length)) &#123;</div><div class="line">        isFloat = <span class="keyword">true</span>;</div><div class="line">        length++;</div><div class="line">        length += getDigitalLength(offset + length);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (isScientificNotation(offset + length)) &#123;</div><div class="line">        isFloat = <span class="keyword">true</span>;</div><div class="line">        length++;</div><div class="line">        <span class="keyword">if</span> (<span class="string">'+'</span> == charAt(offset + length) || <span class="string">'-'</span> == charAt(offset + length)) &#123;</div><div class="line">            length++;</div><div class="line">        &#125;</div><div class="line">        length += getDigitalLength(offset + length);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (isBinaryNumber(offset + length)) &#123;</div><div class="line">        isFloat = <span class="keyword">true</span>;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Token(isFloat ? Literals.FLOAT : Literals.INT, input.substring(offset, offset + length), offset + length);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getDigitalLength</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> offset)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (CharType.isDigital(charAt(offset + result))) &#123;</div><div class="line">        result++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isScientificNotation</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> offset)</span> </span>&#123;</div><div class="line">    <span class="keyword">char</span> current = charAt(offset);</div><div class="line">    <span class="keyword">return</span> <span class="string">'e'</span> == current || <span class="string">'E'</span> == current;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isBinaryNumber</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> offset)</span> </span>&#123;</div><div class="line">    <span class="keyword">char</span> current = charAt(offset);</div><div class="line">    <span class="keyword">return</span> <span class="string">'f'</span> == current || <span class="string">'F'</span> == current || <span class="string">'d'</span> == current || <span class="string">'D'</span> == current;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Literals-CHARS-字符串"><a href="#Literals-CHARS-字符串" class="headerlink" title="Literals.CHARS 字符串"></a>Literals.CHARS 字符串</h3><p>字符串，表示以单引号或者双引号开始的字符串<br>例如 ：select * from commodity.mall_commodity_info where PRODUCT_ID=”102dc49d5c8e4d79a21e35a619a4ece” 的”102dc49d5c8e4d79a21e35a619a4ece”</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//Lexer.java</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isCharsBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">'\''</span> == getCurrentChar(<span class="number">0</span>) || <span class="string">'\"'</span> == getCurrentChar(<span class="number">0</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//Tokenizer.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * scan chars.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> chars token</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> Token <span class="title">scanChars</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> scanChars(charAt(offset));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> Token <span class="title">scanChars</span><span class="params">(<span class="keyword">final</span> <span class="keyword">char</span> terminatedChar)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> length = getLengthUntilTerminatedChar(terminatedChar);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Token(Literals.CHARS, input.substring(offset + <span class="number">1</span>, offset + length - <span class="number">1</span>), offset + length);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Literals-SYMBOL"><a href="#Literals-SYMBOL" class="headerlink" title="Literals.SYMBOL"></a>Literals.SYMBOL</h3><p>符号，例如 &lt; &gt; = &lt;&lt; % 等等</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//Lexer.java</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isSymbolBegin</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> CharType.isSymbol(getCurrentChar(<span class="number">0</span>));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//Tokenizer.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * scan symbol.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> symbol token</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> Token <span class="title">scanSymbol</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> length = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (CharType.isSymbol(charAt(offset + length))) &#123;</div><div class="line">        length++;</div><div class="line">    &#125;</div><div class="line">    String literals = input.substring(offset, offset + length);</div><div class="line">    Symbol symbol;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> == (symbol = Symbol.literalsOf(literals))) &#123;</div><div class="line">        literals = input.substring(offset, offset + --length);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Token(symbol, literals, offset + length);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Assist-词法辅助标记"><a href="#Assist-词法辅助标记" class="headerlink" title="Assist 词法辅助标记"></a>Assist 词法辅助标记</h2><p>Assist分为两种</p>
+<ul>
+<li>END : 结束符</li>
+<li>ERROR: 错误符</li>
+</ul>
+<h1 id="LexerEngine-词法分析器引擎"><a href="#LexerEngine-词法分析器引擎" class="headerlink" title="LexerEngine 词法分析器引擎"></a>LexerEngine 词法分析器引擎</h1><p>这个类主要是对lexer类做了一下封装，有个成员变量Lexer lexer，由构造函数传入不同数据库方言实现的Lexer，<br>我们先看看他主要的方法#skipParentheses，为后面的SQL语句分析留个印象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequiredArgsConstructor</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">LexerEngine</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Lexer lexer;</div><div class="line">        </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 跳过括号内的所有语法标记</div><div class="line">     * skip all tokens that inside parentheses.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> sqlStatement SQL statement</div><div class="line">     * <span class="doctag">@return</span> skipped string 跳过的字符串</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">skipParentheses</span><span class="params">(<span class="keyword">final</span> SQLStatement sqlStatement)</span> </span>&#123;</div><div class="line">        StringBuilder result = <span class="keyword">new</span> StringBuilder(<span class="string">""</span>);</div><div class="line">        <span class="keyword">int</span> count = <span class="number">0</span>; <span class="comment">//记录多重括号问题，左括号加一，右括号减一，当count为0的时候才是闭合的情况</span></div><div class="line">        <span class="keyword">if</span> (Symbol.LEFT_PAREN == lexer.getCurrentToken().getType()) &#123;</div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> beginPosition = lexer.getCurrentToken().getEndPosition();</div><div class="line">            result.append(Symbol.LEFT_PAREN.getLiterals());</div><div class="line">            lexer.nextToken();</div><div class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (equalAny(Symbol.QUESTION)) &#123;</div><div class="line">                    sqlStatement.increaseParametersIndex();</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">//结束符，或者当前是右括号并且已经闭合的情况，跳出循环</span></div><div class="line">                <span class="keyword">if</span> (Assist.END == lexer.getCurrentToken().getType() || (Symbol.RIGHT_PAREN == lexer.getCurrentToken().getType() &amp;&amp; <span class="number">0</span> == count)) &#123;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">//左括号加一，右括号减一</span></div><div class="line">                <span class="keyword">if</span> (Symbol.LEFT_PAREN == lexer.getCurrentToken().getType()) &#123;</div><div class="line">                    count++;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Symbol.RIGHT_PAREN == lexer.getCurrentToken().getType()) &#123;</div><div class="line">                    count--;</div><div class="line">                &#125;</div><div class="line">                lexer.nextToken();</div><div class="line">            &#125;</div><div class="line">            result.append(lexer.getInput().substring(beginPosition, lexer.getCurrentToken().getEndPosition()));</div><div class="line">            lexer.nextToken();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> result.toString();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="LexerEngineFactory-LexerEngine-工厂类"><a href="#LexerEngineFactory-LexerEngine-工厂类" class="headerlink" title="LexerEngineFactory LexerEngine 工厂类"></a>LexerEngineFactory LexerEngine 工厂类</h1><p>这个没什么好说，就是LexerEngine 工厂类,根据不同的DatebaseType 生成不同的LexerEngine实例。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/源码/" rel="tag"># 源码</a>
+          
+            <a href="/tags/数据中间件/" rel="tag"># 数据中间件</a>
+          
+            <a href="/tags/sharding-jdbc/" rel="tag"># sharding-jdbc</a>
+          
+            <a href="/tags/词法分析/" rel="tag"># 词法分析</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/18/spring/spring-ioc-原理/" rel="next" title="spring ioc 原理">
+                <i class="fa fa-chevron-left"></i> spring ioc 原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="JJS" />
+          <p class="site-author-name" itemprop="name">JJS</p>
+           
+              <p class="site-description motion-element" itemprop="description">一个用gitpage来当笔记的家伙</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">96</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lexer-词法分析器"><span class="nav-number">2.</span> <span class="nav-text">Lexer 词法分析器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Token-词法标记"><span class="nav-number">3.</span> <span class="nav-text">Token 词法标记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TokenType-词法标记类型"><span class="nav-number">3.1.</span> <span class="nav-text">TokenType 词法标记类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keyword-词法关键字标记"><span class="nav-number">3.2.</span> <span class="nav-text">Keyword 词法关键字标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Literals-词法字面量标记"><span class="nav-number">3.3.</span> <span class="nav-text">Literals 词法字面量标记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Literals-VARIABLE-词法变量"><span class="nav-number">3.3.1.</span> <span class="nav-text">Literals.VARIABLE 词法变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Literals-IDENTIFIER-词法关键词"><span class="nav-number">3.3.2.</span> <span class="nav-text">Literals.IDENTIFIER 词法关键词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Literals-HEX-16进制"><span class="nav-number">3.3.3.</span> <span class="nav-text">Literals.HEX 16进制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Literals-INT-数字"><span class="nav-number">3.3.4.</span> <span class="nav-text">Literals.INT 数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Literals-FLOAT-浮点数"><span class="nav-number">3.3.5.</span> <span class="nav-text">Literals.FLOAT 浮点数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Literals-CHARS-字符串"><span class="nav-number">3.3.6.</span> <span class="nav-text">Literals.CHARS 字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Literals-SYMBOL"><span class="nav-number">3.3.7.</span> <span class="nav-text">Literals.SYMBOL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Assist-词法辅助标记"><span class="nav-number">3.4.</span> <span class="nav-text">Assist 词法辅助标记</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LexerEngine-词法分析器引擎"><span class="nav-number">4.</span> <span class="nav-text">LexerEngine 词法分析器引擎</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LexerEngineFactory-LexerEngine-工厂类"><span class="nav-number">5.</span> <span class="nav-text">LexerEngineFactory LexerEngine 工厂类</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JJS</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("V75crFg32NcD1gBrRYa7QohI-gzGzoHsz", "s89dcpOqjm5SqjxoCWVpWR2e");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

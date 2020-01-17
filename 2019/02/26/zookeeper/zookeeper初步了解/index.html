@@ -1,0 +1,914 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="zookeeper," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="zookeeper是什么？官方这样解释：ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of ser">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zookeeper初步了解">
+<meta property="og:url" content="http://jjs857012499.github.io/2019/02/26/zookeeper/zookeeper初步了解/index.html">
+<meta property="og:site_name" content="深水暗流">
+<meta property="og:description" content="zookeeper是什么？官方这样解释：ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of ser">
+<meta property="og:image" content="http://jjs857012499.github.io/2019/02/26/zookeeper/zookeeper初步了解/UKIVH7`HQONREA8$8279.png">
+<meta property="og:updated_time" content="2020-01-17T08:01:28.860Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zookeeper初步了解">
+<meta name="twitter:description" content="zookeeper是什么？官方这样解释：ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of ser">
+<meta name="twitter:image" content="http://jjs857012499.github.io/2019/02/26/zookeeper/zookeeper初步了解/UKIVH7`HQONREA8$8279.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '02VN51U09E',
+      apiKey: '445f9ad88a8c5642d52b42b038dd011a',
+      indexName: 'jjs857012499.github.io',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与「${query}」相关的内容","hits_stats":" ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jjs857012499.github.io/2019/02/26/zookeeper/zookeeper初步了解/"/>
+
+
+
+
+
+  <title> zookeeper初步了解 | 深水暗流 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">深水暗流</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">冰是睡着的水</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://jjs857012499.github.io/2019/02/26/zookeeper/zookeeper初步了解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJS">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深水暗流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                zookeeper初步了解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-26T10:31:59+08:00">
+                2019-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/zookeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">zookeeper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/26/zookeeper/zookeeper初步了解/" class="leancloud_visitors" data-flag-title="zookeeper初步了解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="zookeeper是什么？"><a href="#zookeeper是什么？" class="headerlink" title="zookeeper是什么？"></a>zookeeper是什么？</h2><p>官方这样解释：<br>ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of services are used in some form or another by distributed applications. Each time they are implemented there is a lot of work that goes into fixing the bugs and race conditions that are inevitable. Because of the difficulty of implementing these kinds of services, applications initially usually skimp on them, which make them brittle in the presence of change and difficult to manage. Even when done correctly, different implementations of these services lead to management complexity when the applications are deployed.</p>
+<blockquote>
+<p>大概的说，zookeeper是一个分布式框架，主要用于解决分布式应用遇到的一些数据管理问题。如维护配置信息，统一命名，状态同步，集群管理</p>
+</blockquote>
+<h2 id="简单点来说，zookeeper就是文件系统-通知监听机制"><a href="#简单点来说，zookeeper就是文件系统-通知监听机制" class="headerlink" title="简单点来说，zookeeper就是文件系统+通知监听机制"></a>简单点来说，zookeeper就是文件系统+通知监听机制</h2><a id="more"></a>
+<h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>Zookeeper维护一个类似文件系统的数据结构：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">──root</div><div class="line">   ├─Zookeeper</div><div class="line">   ├─Config</div><div class="line">   ├─NameServer</div><div class="line">   │  └─serverA</div><div class="line">   │  └─serverB</div><div class="line">   │  └─serverC</div><div class="line">   ├─App</div><div class="line">   │  ├─App1</div><div class="line">   │  └─App2</div></pre></td></tr></table></figure></p>
+<p>每个子目录项如 NameService 都被称作为 znode(目录节点)，和文件系统一样，我们能够自由的增加、删除znode，在一个znode下增加、删除子znode，唯一的不同在于znode是可以存储数据的。</p>
+<h4 id="有四种类型的znode："><a href="#有四种类型的znode：" class="headerlink" title="有四种类型的znode："></a>有四种类型的znode：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">PERSISTENT-持久化目录节点: 客户端与zookeeper断开连接后，该节点依旧存在</div><div class="line">PERSISTENT_SEQUENTIAL-持久化顺序编号目录节点: 客户端与zookeeper断开连接后，该节点依旧存在，只是Zookeeper给该节点名称进行顺序编号</div><div class="line">EPHEMERAL-临时目录节点: 客户端与zookeeper断开连接后，该节点被删除</div><div class="line">EPHEMERAL_SEQUENTIAL-临时顺序编号目录节点: 客户端与zookeeper断开连接后，该节点被删除，只是Zookeeper给该节点名称进行顺序编号</div></pre></td></tr></table></figure>
+<h3 id="监听通知机制"><a href="#监听通知机制" class="headerlink" title="监听通知机制"></a>监听通知机制</h3><p>客户端注册监听它关心的目录节点，当目录节点发生变化（数据改变、被删除、子目录节点增加删除）时，zookeeper会通知客户端。</p>
+<h2 id="Zookeeper能做什么"><a href="#Zookeeper能做什么" class="headerlink" title="Zookeeper能做什么"></a>Zookeeper能做什么</h2><p>zookeeper功能非常强大，可以实现诸如分布式应用配置管理、统一命名服务、状态同步服务、集群管理等功能，我们这里拿比较简单的分布式应用配置管理为例来说明。<br><img src="/2019/02/26/zookeeper/zookeeper初步了解/UKIVH7`HQONREA8$8279.png" alt="logo"><br>假设我们的程序是分布式部署在多台机器上，如果我们要改变程序的配置文件，需要逐台机器去修改，非常麻烦，现在把这些配置全部放到zookeeper上去，保存在 zookeeper 的某个目录节点中，然后所有相关应用程序对这个目录节点进行监听，一旦配置信息发生变化，每个应用程序就会收到 zookeeper 的通知，然后从 zookeeper 获取新的配置信息应用到系统中。</p>
+<h2 id="单机操作"><a href="#单机操作" class="headerlink" title="单机操作"></a>单机操作</h2><p>下载并解压到当前目录，最直接的是单机模式启动，由于jar包，我们需要java环境</p>
+<h3 id="启动前，我们需要一个配置文件-conf-zoo-cfg-这里有个例子：-conf-zoo-sample-cfg"><a href="#启动前，我们需要一个配置文件-conf-zoo-cfg-这里有个例子：-conf-zoo-sample-cfg" class="headerlink" title="启动前，我们需要一个配置文件./conf/zoo.cfg. 这里有个例子：./conf/zoo_sample.cfg"></a>启动前，我们需要一个配置文件./conf/zoo.cfg. 这里有个例子：./conf/zoo_sample.cfg</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">#initLimit=10</div><div class="line">#syncLimit=5</div><div class="line">dataDir=/tmp/zookeeper</div><div class="line">clientPort=2181</div></pre></td></tr></table></figure>
+<blockquote>
+<p>tickTime: 这个是zookeeper与客户端维持心跳的时间间隔（单位：毫秒），也就是每一次tickTime会发送一次心跳<br>initLimit：这个配置项是用来配置zookeeper用来接受客户端（这里的客户端并非用户连接到zookeeper的客户端，而是zookeeper服务器集群中连接到leaderde的follow服务器）初始化连接时最长能忍受多少个心跳时间间隔数，当已经超过十个心跳时间（tickTime）长度后，zookeeper服务器还没收到客户端的返回信息，那么表明这个客户端连接失败，总的时间长度=10<em>2000=20秒 （单机可以不用）<br>syncLimit：这个配置项标识leader与follow之间发送消息，请求与应答时间长度，最长不能超过多少个tickTime长度，总的时间长度=5</em>2000=10秒（单机可以不用）<br>dataDir: 缓存内存数据的快照，默认写数据日志文件也在这个目录<br>clientPort：客户端监听端口号</p>
+</blockquote>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">bin/zkServer.sh start</div><div class="line">bin/zkServer.sh status #查看状态</div></pre></td></tr></table></figure>
+<h3 id="连接到zookeeper"><a href="#连接到zookeeper" class="headerlink" title="连接到zookeeper"></a>连接到zookeeper</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">bin/zkCli.sh -server 127.0.0.1:2181 #连接到zookeeper</div><div class="line">[zk: 127.0.0.1:2181(CONNECTED) 29] help  #获取帮助文档</div><div class="line">ZooKeeper -server host:port cmd args</div><div class="line">        stat path [watch]</div><div class="line">        set path data [version]</div><div class="line">        ls path [watch]</div><div class="line">        delquota [-n|-b] path</div><div class="line">        ls2 path [watch]</div><div class="line">        setAcl path acl</div><div class="line">        setquota -n|-b val path</div><div class="line">        history</div><div class="line">        redo cmdno</div><div class="line">        printwatches on|off</div><div class="line">        delete path [version]</div><div class="line">        sync path</div><div class="line">        listquota path</div><div class="line">        rmr path</div><div class="line">        get path [watch]</div><div class="line">        create [-s] [-e] path data acl</div><div class="line">        addauth scheme auth</div><div class="line">        quit</div><div class="line">        getAcl path</div><div class="line">        close</div><div class="line">        connect host:port</div><div class="line">[zk: 127.0.0.1:2181(CONNECTED) 16] ls /  #查看根节点</div><div class="line">[zookeeper]</div><div class="line">[zk: 127.0.0.1:2181(CONNECTED) 22] create /config config_data #创建节点</div><div class="line">Created /config</div><div class="line">[zk: 127.0.0.1:2181(CONNECTED) 24] get /config # 获取节点信息</div><div class="line">config_data</div><div class="line">cZxid = 0x9</div><div class="line">ctime = Mon Feb 25 09:06:21 GMT 2019</div><div class="line">mZxid = 0x9</div><div class="line">mtime = Mon Feb 25 09:06:21 GMT 2019</div><div class="line">pZxid = 0x9</div><div class="line">cversion = 0</div><div class="line">dataVersion = 0</div><div class="line">aclVersion = 0</div><div class="line">ephemeralOwner = 0x0</div><div class="line">dataLength = 11</div><div class="line">numChildren = 0</div><div class="line">[zk: 127.0.0.1:2181(CONNECTED) 25] set /config config_data1  #更新节点信息（dataVersion会增加，dataLength根据内容变化）</div><div class="line">cZxid = 0x9</div><div class="line">ctime = Mon Feb 25 09:06:21 GMT 2019</div><div class="line">mZxid = 0xa</div><div class="line">mtime = Mon Feb 25 09:06:52 GMT 2019</div><div class="line">pZxid = 0x9</div><div class="line">cversion = 0</div><div class="line">dataVersion = 1</div><div class="line">aclVersion = 0</div><div class="line">ephemeralOwner = 0x0</div><div class="line">dataLength = 12</div><div class="line">numChildren = 0</div></pre></td></tr></table></figure>
+<h2 id="集群模式运行"><a href="#集群模式运行" class="headerlink" title="集群模式运行"></a>集群模式运行</h2><h3 id="修改配置文件zoo–1-cfg，zoo-2-cfg-zoo-2-cfg-原配置文件里有的，修改成下面的值，没有的则加上"><a href="#修改配置文件zoo–1-cfg，zoo-2-cfg-zoo-2-cfg-原配置文件里有的，修改成下面的值，没有的则加上" class="headerlink" title="修改配置文件zoo–1.cfg，zoo-2.cfg,zoo-2.cfg,原配置文件里有的，修改成下面的值，没有的则加上"></a>修改配置文件zoo–1.cfg，zoo-2.cfg,zoo-2.cfg,原配置文件里有的，修改成下面的值，没有的则加上</h3><p>zoo-1.cfg<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">syncLimit=5</div><div class="line">dataDir=/tmp/zookeeper-1</div><div class="line">clientPort=2181</div><div class="line">server.1=127.0.0.1:2888:3888</div><div class="line">server.2=127.0.0.1:2889:3889</div><div class="line">server.3=127.0.0.1:2890:3890</div></pre></td></tr></table></figure></p>
+<p>zoo-2.cfg<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">syncLimit=5</div><div class="line">dataDir=/tmp/zookeeper-2</div><div class="line">clientPort=2181</div><div class="line">server.1=127.0.0.1:2888:3888</div><div class="line">server.2=127.0.0.1:2889:3889</div><div class="line">server.3=127.0.0.1:2890:3890</div></pre></td></tr></table></figure></p>
+<p>zoo-3.cfg<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">syncLimit=5</div><div class="line">dataDir=/tmp/zookeeper-3</div><div class="line">clientPort=2181</div><div class="line">server.1=127.0.0.1:2888:3888</div><div class="line">server.2=127.0.0.1:2889:3889</div><div class="line">server.3=127.0.0.1:2890:3890</div></pre></td></tr></table></figure></p>
+<p>对于serverd,官方文档有这样一句话<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Every machine that is part of the ZooKeeper ensemble should know about every other machine in the ensemble. You accomplish this with the series of lines of the form server.id=host:port:port. The parameters host and port are straightforward. You attribute the server id to each machine by creating a file named myid, one for each server, which resides in that server&apos;s data directory, as specified by the configuration file parameter dataDir.</div></pre></td></tr></table></figure></p>
+<p>server.id=port1:port2<br>id : 服务标号标识 （1-255）<br>port1：follower与leader通讯用的端口号<br>port2: 选举用的端口号</p>
+<h3 id="标识server-ID"><a href="#标识server-ID" class="headerlink" title="标识server ID"></a>标识server ID</h3><p>创建三个文件夹/tmp/zookeeper-1，/tmp/zookeeper-2，/tmp/zookeeper-2，在每个目录中创建文件myid 文件，写入当前实例的server id，即1.2.3</p>
+<h3 id="启动三个zookeeper实例"><a href="#启动三个zookeeper实例" class="headerlink" title="启动三个zookeeper实例"></a>启动三个zookeeper实例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ bin/zkServer.sh start conf/zoo-1.cfg</div><div class="line">$ bin/zkServer.sh start conf/zoo-2.cfg</div><div class="line">$ bin/zkServer.sh start conf/zoo-3.cfg</div></pre></td></tr></table></figure>
+<h3 id="检查三个实例的状态"><a href="#检查三个实例的状态" class="headerlink" title="检查三个实例的状态"></a>检查三个实例的状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ ./bin/zkServer.sh status ./conf/zoo-1.cfg</div><div class="line">ZooKeeper JMX enabled by default</div><div class="line">Using config: ./conf/zoo-1.cfg</div><div class="line">Mode: follower</div><div class="line">$ ./bin/zkServer.sh status ./conf/zoo-2.cfg</div><div class="line">ZooKeeper JMX enabled by default</div><div class="line">Using config: ./conf/zoo-2.cfg</div><div class="line">Mode: leader</div><div class="line">$ ./bin/zkServer.sh status ./conf/zoo-3.cfg</div><div class="line">ZooKeeper JMX enabled by default</div><div class="line">Using config: ./conf/zoo-3.cfg</div><div class="line">Mode: follower</div></pre></td></tr></table></figure>
+<p>至此，我们对zookeeper就算有了一个入门的了解，当然zookeeper远比我们这里描述的功能多，比如用zookeeper实现集群管理，分布式锁，分布式队列，zookeeper集群leader选举等等</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zookeeper/" rel="tag"># zookeeper</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/14/面试题/死锁/" rel="next" title="死锁">
+                <i class="fa fa-chevron-left"></i> 死锁
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/05/mysql/mysql基础点/" rel="prev" title="mysql基础点">
+                mysql基础点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="JJS" />
+          <p class="site-author-name" itemprop="name">JJS</p>
+           
+              <p class="site-description motion-element" itemprop="description">一个用gitpage来当笔记的家伙</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">96</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper是什么？"><span class="nav-number">1.</span> <span class="nav-text">zookeeper是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单点来说，zookeeper就是文件系统-通知监听机制"><span class="nav-number">2.</span> <span class="nav-text">简单点来说，zookeeper就是文件系统+通知监听机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">2.1.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有四种类型的znode："><span class="nav-number">2.1.1.</span> <span class="nav-text">有四种类型的znode：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听通知机制"><span class="nav-number">2.2.</span> <span class="nav-text">监听通知机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zookeeper能做什么"><span class="nav-number">3.</span> <span class="nav-text">Zookeeper能做什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单机操作"><span class="nav-number">4.</span> <span class="nav-text">单机操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动前，我们需要一个配置文件-conf-zoo-cfg-这里有个例子：-conf-zoo-sample-cfg"><span class="nav-number">4.1.</span> <span class="nav-text">启动前，我们需要一个配置文件./conf/zoo.cfg. 这里有个例子：./conf/zoo_sample.cfg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动"><span class="nav-number">4.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接到zookeeper"><span class="nav-number">4.3.</span> <span class="nav-text">连接到zookeeper</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群模式运行"><span class="nav-number">5.</span> <span class="nav-text">集群模式运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置文件zoo–1-cfg，zoo-2-cfg-zoo-2-cfg-原配置文件里有的，修改成下面的值，没有的则加上"><span class="nav-number">5.1.</span> <span class="nav-text">修改配置文件zoo–1.cfg，zoo-2.cfg,zoo-2.cfg,原配置文件里有的，修改成下面的值，没有的则加上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标识server-ID"><span class="nav-number">5.2.</span> <span class="nav-text">标识server ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动三个zookeeper实例"><span class="nav-number">5.3.</span> <span class="nav-text">启动三个zookeeper实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查三个实例的状态"><span class="nav-number">5.4.</span> <span class="nav-text">检查三个实例的状态</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JJS</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("V75crFg32NcD1gBrRYa7QohI-gzGzoHsz", "s89dcpOqjm5SqjxoCWVpWR2e");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

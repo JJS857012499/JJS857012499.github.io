@@ -1,0 +1,936 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="freeMarker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="FreeMarker 基础知识 表达式(引用)表达式是FreeMarker的核心功能，FreeMarker中的插值支持多种表达式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeMarker 基础知识 表达式(引用)">
+<meta property="og:url" content="http://jjs857012499.github.io/2017/03/17/freeMarker/FreeMarker-基础知识-表达式-引用/index.html">
+<meta property="og:site_name" content="深水暗流">
+<meta property="og:description" content="FreeMarker 基础知识 表达式(引用)表达式是FreeMarker的核心功能，FreeMarker中的插值支持多种表达式。">
+<meta property="og:updated_time" content="2020-01-17T08:01:28.135Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FreeMarker 基础知识 表达式(引用)">
+<meta name="twitter:description" content="FreeMarker 基础知识 表达式(引用)表达式是FreeMarker的核心功能，FreeMarker中的插值支持多种表达式。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '02VN51U09E',
+      apiKey: '445f9ad88a8c5642d52b42b038dd011a',
+      indexName: 'jjs857012499.github.io',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与「${query}」相关的内容","hits_stats":" ${hits} 条相关记录，共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jjs857012499.github.io/2017/03/17/freeMarker/FreeMarker-基础知识-表达式-引用/"/>
+
+
+
+
+
+  <title> FreeMarker 基础知识 表达式(引用) | 深水暗流 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">深水暗流</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">冰是睡着的水</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://jjs857012499.github.io/2017/03/17/freeMarker/FreeMarker-基础知识-表达式-引用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JJS">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深水暗流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                FreeMarker 基础知识 表达式(引用)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-17T11:48:10+08:00">
+                2017-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/freeMarker/" itemprop="url" rel="index">
+                    <span itemprop="name">freeMarker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/03/17/freeMarker/FreeMarker-基础知识-表达式-引用/" class="leancloud_visitors" data-flag-title="FreeMarker 基础知识 表达式(引用)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>FreeMarker 基础知识 表达式(引用)<br>表达式是FreeMarker的核心功能，FreeMarker中的插值支持多种表达式。<br><a id="more"></a></p>
+<h2 id="一、直接指定值"><a href="#一、直接指定值" class="headerlink" title="一、直接指定值"></a>一、直接指定值</h2><p>直接指定值可以是字符串、数值、布尔值、集合及Map对象。</p>
+<ol>
+<li>字符串<br>直接指定字符串值使用单引号或双引号限定。字符串中可以使用转义字符”\”。如果字符串内有大量的特殊字符，则可以在引号的前面加上一个字母r，则字符串内的所有字符都将直接输出。</li>
+<li>数值<br>数值可以直接输入，不需要引号。FreeMarker不支持科学计数法。</li>
+<li>布尔值<br>直接使用true或false，不使用引号。</li>
+<li>集合<br>集合用中括号包括，集合元素之间用逗号分隔。<br>使用数字范围也可以表示一个数字集合，如1..5等同于集合[1, 2, 3, 4, 5]；同样也可以用5..1来表示[5, 4, 3, 2, 1]。</li>
+<li>Map对象<br>Map对象使用花括号包括，Map中的key-value对之间用冒号分隔，多组key-value对之间用逗号分隔。<br>注意：Map对象的key和value都是表达式，但key必须是字符串。<h2 id="二、输出变量值"><a href="#二、输出变量值" class="headerlink" title="二、输出变量值"></a>二、输出变量值</h2>FreeMarker的表达式输出变量时，这些变量可以是顶层变量，也可以是Map对象的变量，还可以是集合中的变量，并可以使用点（.）语法来访问Java对象的属性。</li>
+<li>顶层变量<br>所谓顶层变量就是直接放在数据模型中的值。输出时直接用${variableName}即可。</li>
+<li>输出集合元素<br>可以根据集合元素的索引来输出集合元素，索引用中括号包括。如： 输出[“1”， “2”， “3”]这个名为number的集合，可以用${number[0]}来输出第一个数字。<br>FreeMarker还支持用number[1..2]来表示原集合的子集合[“2”， “3”]。</li>
+<li>输出Map元素<br>对于JavaBean实例，FreeMarker一样把它看作属性为key，属性值为value的Map对象。<br>输出Map对象时，可以使用点语法或中括号语法，如下面的几种写法的效果是一样的：<pre><code>book.author.name
+book.author[&quot;name&quot;]
+book[&quot;author&quot;].name
+book[&quot;author&quot;][&quot;name&quot;]
+</code></pre>使用点语法时，变量名字有和顶层变量一样的限制，但中括号语法没有任何限制。<h2 id="三、字符串操作"><a href="#三、字符串操作" class="headerlink" title="三、字符串操作"></a>三、字符串操作</h2></li>
+<li>字符串连接<br>字符串连接有两种语法：<br>（1） 使用${..}或#{..}在字符串常量内插入表达式的值；<br>(2)  直接使用连接运算符“+”连接字符串。<br>如，下面两种写法等效：<pre><code>${&quot;Hello, ${user}&quot;}
+${&quot;Hello, &quot; + user + &quot;!&quot;}
+</code></pre>有一点需要注意： ${..}只能用于文本部分作为插值输出，而不能用于比较等其他用途，如：<pre><code>&lt;#if ${isBig}&gt;Wow!&lt;/#if&gt;
+&lt;#if &quot;${isBig}&quot;&gt;Wow!&lt;/#if&gt;
+</code></pre>应该写成：<pre><code>&lt;#if isBig&gt;Wow!&lt;/#if&gt;
+</code></pre></li>
+<li>截取子串<br>截取子串可以根据字符串的索引来进行，如果指定一个索引值，则取得字符串该索引处的字符；如果指定两个索引值，则截取两个索引中间的字符串子串。如：<pre><code>&lt;#assign number=&quot;01234&quot;&gt;
+${number[0]} &lt;#-- 输出字符0 --&gt;
+${number[0..3]} &lt;#-- 输出子串“0123” --&gt;四、集合连接操作
+</code></pre>   连接集合的运算符为“+”<h2 id="五、Map连接操作"><a href="#五、Map连接操作" class="headerlink" title="五、Map连接操作"></a>五、Map连接操作</h2>Map连接操作的运算符为“+”<h2 id="六、算术运算符"><a href="#六、算术运算符" class="headerlink" title="六、算术运算符"></a>六、算术运算符</h2>FreeMarker表达式中支持“+”、“－”、“*”、“/”、“%”运算符。<h2 id="七、比较运算符"><a href="#七、比较运算符" class="headerlink" title="七、比较运算符"></a>七、比较运算符</h2>表达式中支持的比较运算符有如下几种：</li>
+<li>=（或者==）： 判断两个值是否相等；</li>
+<li>!=： 判断两个值是否不相等；<br>注： =和!=可以用作字符串、数值和日期的比较，但两边的数据类型必须相同。而且FreeMarker的比较是精确比较，不会忽略大小写及空格。</li>
+<li><blockquote>
+<p>（或者gt）： 大于</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>=（或者gte）： 大于等于</p>
+</blockquote>
+</li>
+<li>&lt;（或者lt）： 小于</li>
+<li>&lt;=（或者lte）： 小于等于<br>注： 上面这些比较运算符可以用于数字和日期，但不能用于字符串。大部分时候，使用gt比&gt;有更好的效果，因为FreeMarker会把&gt;解释成标签的结束字符。可以使用括号来避免这种情况，如：&lt;#if (x&gt;y)&gt;。<h2 id="八、逻辑运算符"><a href="#八、逻辑运算符" class="headerlink" title="八、逻辑运算符"></a>八、逻辑运算符</h2></li>
+<li>&amp;&amp;： 逻辑与；</li>
+<li>||： 逻辑或；</li>
+<li>!： 逻辑非<br>逻辑运算符只能用于布尔值。<h2 id="九、内建函数"><a href="#九、内建函数" class="headerlink" title="九、内建函数"></a>九、内建函数</h2>FreeMarker提供了一些内建函数来转换输出，可以在任何变量后紧跟?，?后紧跟内建函数，就可以通过内建函数来转换输出变量。字符串相关常用的内建函数：</li>
+<li>html： 对字符串进行HTML编码；</li>
+<li>cap_first： 使字符串第一个字母大写；</li>
+<li>lower_case： 将字符串转成小写；</li>
+<li>upper_case： 将字符串转成大写；集合相关常用的内建函数：</li>
+<li>size： 获得集合中元素的个数；数字值相关常用的内建函数：</li>
+<li>int： 取得数字的整数部分。十、空值处理运算符<br>FreeMarker的变量必须赋值，否则就会抛出异常。而对于FreeMarker来说，null值和不存在的变量是完全一样的，因为FreeMarker无法理解null值。<br>FreeMarker提供两个运算符来避免空值：</li>
+<li>!： 指定缺失变量的默认值；</li>
+<li>??：判断变量是否存在。<br>!运算符有两种用法：variable!或variable!defaultValue。第一种用法不给变量指定默认值，表明默认值是空字符串、长度为0的集合、或长度为0的Map对象。<br>使用!运算符指定默认值并不要求默认值的类型和变量类型相同。<br>??运算符返回布尔值，如：variable??，如果变量存在，返回true，否则返回false。</li>
+</ol>
+<p>freemarker 的内建函数 contains 的使用<br>freemarker 的内建函数 contains 的使用 关键字: freemarker contains<br>freemarker 的内建函数 contains 的使用:<br>&lt;#if employee.departments?contains(department)&gt;checked=”checked”&lt;/#if&gt; 其中departments是一个集合，而department是departments集合里的一个元素。contains函数可以判断出，元素 department是否存在于集合departments里，最终返回一个Booleancontains是freemarker的内建函数，即自带的 。<br>FreeMarker 的内建函数有：<br>chunk,  is_date,  last,  root,  j_string,  round,  contains,  is_hash,  long,  float,  ends_with,  namespace,  matches,  time,  values,  seq_last_index_of,  uncap_first,  byte,  substring,  is_transform,  web_safe,  groups,  seq_contains,  is_macro,  index_of,  word_list,  int,  is_method,  eval,  parent,  xml,  number,  capitalize,  if_exists,  rtf,  node_type,  double,  is_directive,  url,  size,  default,  floor,  ceiling, is_boolean,  split,  node_name,  is_enumerable,  seq_index_of,  is_sequence,  sort,  is_node,<br>sort_by,  left_pad,  cap_first,  interpret,  children,  node_namespace,  chop_linebreak, date,  short,  last_index_of,  is_collection,  ancestors,  length,  trim,  datetime, is_string,  reverse,  c,  keys,  upper_case,  js_string,  has_content,  right_pad,  replace,  is_hash_ex,  new,  is_number,  lower_case,  is_indexable,  string,  exists,  html,  first</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/freeMarker/" rel="tag"># freeMarker</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/17/maven/idea新建多模块maven项目（树结构和水平结构）/" rel="next" title="idea新建多模块maven项目（树结构和水平结构）">
+                <i class="fa fa-chevron-left"></i> idea新建多模块maven项目（树结构和水平结构）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/17/freeMarker/Freemarker中对List进行排序/" rel="prev" title="Freemarker中对List进行排序">
+                Freemarker中对List进行排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="JJS" />
+          <p class="site-author-name" itemprop="name">JJS</p>
+           
+              <p class="site-description motion-element" itemprop="description">一个用gitpage来当笔记的家伙</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">96</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、直接指定值"><span class="nav-number">1.</span> <span class="nav-text">一、直接指定值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、输出变量值"><span class="nav-number">2.</span> <span class="nav-text">二、输出变量值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、字符串操作"><span class="nav-number">3.</span> <span class="nav-text">三、字符串操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Map连接操作"><span class="nav-number">4.</span> <span class="nav-text">五、Map连接操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、算术运算符"><span class="nav-number">5.</span> <span class="nav-text">六、算术运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、比较运算符"><span class="nav-number">6.</span> <span class="nav-text">七、比较运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、逻辑运算符"><span class="nav-number">7.</span> <span class="nav-text">八、逻辑运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九、内建函数"><span class="nav-number">8.</span> <span class="nav-text">九、内建函数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JJS</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("V75crFg32NcD1gBrRYa7QohI-gzGzoHsz", "s89dcpOqjm5SqjxoCWVpWR2e");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
